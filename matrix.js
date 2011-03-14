@@ -57,3 +57,49 @@ Matrix.cell = function (x,y){
   return [x,y]
 }
 
+Matrix.tabulate = function (list,func){
+  var table = new Table()
+  var cells = []
+  
+  list.forEach(function (e){
+    func(e,index)
+  })
+  function index(x,y, cell){
+/*    table[x] = table[x] || {}
+    table[x][y] = cell
+    cells.push()*/
+    table.set(x,y,cell)
+  }
+  return table
+}
+
+function Table (){
+  this.rows = []  
+  this.cols = []
+  this.__table = {}
+}
+
+Table.prototype = {
+  get: function (x,y){
+    return this.__table [x][y]
+  }
+, set: function (row,col,value){
+
+    if(!~this.rows.indexOf(row))
+      this.rows.push(row)
+    if(!~this.cols.indexOf(col))
+      this.cols.push(col)
+
+    this.__table[row] = this.__table[row] || {}
+    this.__table[row][col] = value
+  }
+, toArray: function(){
+    var self = this
+    return self.rows.map(function (r){
+      return self.cols.map(function (c){
+        return self.get(r,c)
+      })
+    })
+    
+  }
+}
